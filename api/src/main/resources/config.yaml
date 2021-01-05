@@ -1,0 +1,54 @@
+kumuluzee:
+  name: model-3d-comments-service
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-url: http://localhost:8081
+    http:
+      port: 8081
+  datasources:
+    - jndi-name: jdbc/CommentsMetadataDS
+      connection-url: jdbc:postgresql://ec2-54-246-67-245.eu-west-1.compute.amazonaws.com:5432/d98ekppc6avkml
+      username: ocqoknxgynozzl
+      password: 07598f20b6cdb7eee953d29a6c44b14768a696d9950714a8a517a9be2430b1fa
+      max-pool-size: 20
+  health:
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/CommentsMetadataDS
+      consul-health-check:
+        connection-url: http://52.151.200.181/ui/hashidc1/nodes/azure-consul-server-0/health-checks
+  metrics:
+    web-instrumentation:
+      - name: comments-endpoint
+        url-pattern;: /v1/comments/*
+  config:
+    consul:
+      agent: http://52.151.200.181:80
+  logs:
+    config-file: '<?xml version="1.0" encoding="UTF-8"?>
+                          <Configuration name="comments">
+                              <Appenders>
+                                  <Console name="console" target="SYSTEM_OUT">
+                                      <PatternLayout pattern="%d %p %marker %m %X %ex %n"/>
+                                  </Console>
+                                  <Socket name="logstash" host="a9e1c28f-90e9-4962-a4f8-9a03f3658404-ls.logit.io"
+                                  port="18515" protocol="udp">
+                                      <JSONLayout complete="false" compact="true" eventEol="true" charset="UTF-8" properties="true"/>
+                                  </Socket>
+                              </Appenders>
+                              <Loggers>
+                                  <!-- Default logger -->
+                                  <Root level="all">
+                                      <AppenderRef ref="console" level="info" />
+                                      <AppenderRef ref="logstash" level="trace" />
+                                  </Root>
+                              </Loggers>
+                          </Configuration>'
+
+rest-properties:
+  maintenance-mode: false
+  broken: false
+  parser-service-ip: http://20.75.154.234/model-3d-parser/v1/parser

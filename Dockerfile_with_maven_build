@@ -1,0 +1,18 @@
+# Dvostopenjski docker build - znotraj enega dockerja buildamo app, build pa potem izvlečemo v drug docker - prednost je da ne potrebujemo build okolja na računalniku
+# Vsaka FROM direktiva je svoja stopnja
+
+# FROM Direktiva označena kot build
+FROM maven:3.6.3-openjdk-14 AS build
+# V image kopiramo naš app
+COPY ./ /app
+WORKDIR /app
+# V containerju izvedemo build
+RUN mvn clean package -U
+
+FROM adoptopenjdk:14-jre-hotspot
+RUN mkdir /app
+WORKDIR /app
+# Kopiramo jar iz dockerj builda in ne iz računalnika (računalnik ne potrbeuje mavena v tem primeru)
+COPY --from=build ./app/api/target/model-3d-catalog-api-1.0.0-SNAPSHOT.jar /app
+EXPOSE 8080
+CMD ["java", "-jar", "model-3d-catalog-api-1.0.0-SNAPSHOT.jar"]
