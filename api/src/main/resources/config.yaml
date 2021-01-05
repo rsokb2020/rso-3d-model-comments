@@ -4,9 +4,9 @@ kumuluzee:
     name: dev
   version: 1.0.0
   server:
-    base-url: http://localhost:8081
+    base-url: http://localhost:8080
     http:
-      port: 8081
+      port: 8080
   datasources:
     - jndi-name: jdbc/CommentsMetadataDS
       connection-url: jdbc:postgresql://ec2-54-246-67-245.eu-west-1.compute.amazonaws.com:5432/d98ekppc6avkml

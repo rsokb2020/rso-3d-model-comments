@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: model-3d-comments-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: model-3d-comments
+  template:
+    metadata:
+      labels:
+        app: model-3d-comments
+    spec:
+      containers:
+        - image: klemiba/model-3d-comments:2021-01-05-21-46-11
+          name: model-3d-comments
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://ec2-54-246-67-245.eu-west-1.compute.amazonaws.com:5432/d98ekppc6avkml
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: ocqoknxgynozzl
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pg-pass-2
+                  key: KUMULUZEE_DATASOURCES0_PASSWORD
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+
+          #livenessProbe:
+          #  httpGet:
+          #    path: /health/live
+          #    port: server
+          #  initialDelaySeconds: 20
+          #  periodSeconds: 3
+          #readinessProbe:
+          #  httpGet:
+          #    path: /health/ready
+          #    port: server
+          #  periodSeconds: 3
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: model-3d-comments
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: model-3d-comments
