@@ -15,4 +15,4 @@ WORKDIR /app
 # Kopiramo jar iz dockerj builda in ne iz računalnika (računalnik ne potrbeuje mavena v tem primeru)
 COPY --from=build ./app/api/target/model-3d-catalog-api-1.0.0-SNAPSHOT.jar /app
 EXPOSE 8080
-CMD ["java", "-jar", "model-3d-catalog-api-1.0.0-SNAPSHOT.jar"]
+CMD ["java", "-jar", "model-3d-comments-api-1.0.0-SNAPSHOT.jar"]

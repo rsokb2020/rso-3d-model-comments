@@ -6,7 +6,7 @@ RUN mkdir /app
 
 WORKDIR /app
 
-ADD ./api/target/model-3d-coemmnts-api-1.0.0-SNAPSHOT.jar /app
+ADD ./api/target/model-3d-comments-api-1.0.0-SNAPSHOT.jar /app
 
 EXPOSE 8080
 
