@@ -39,7 +39,7 @@ jobs:
       id: docker_build
       uses: docker/build-push-action@v2
       with:
-        # Specifikacija docker fajla
+        # Specifikacija docker datoteke
         file: ./Dockerfile_with_maven_build
         # Hočemo da se pusha
         push: true
